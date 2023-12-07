@@ -1,0 +1,258 @@
+    
+<!DOCTYPE html>      
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #e6f7ff; /* Light blue background color */
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50; /* Green header background color */
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            background-color: #fff; /* White background for the game board */
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #cce5ff; /* Light blue cell background color */
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #new-game-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #new-game-popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #new-game-button {
+            background-color: #4CAF50; /* Green button color */
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50; /* Green footer background color */
+            color: #fff;
+        }
+
+        #ad-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+    <title>SSY GAMES - Tic Tac Toe</title>
+</head>
+<body>
+    <header>
+        <img src="https://see.fontimg.com/api/renderfont4/Yz9Kj/eyJyIjoiZnMiLCJoIjoxMDgsInciOjIwMDAsImZzIjo1NCwiZmdjIjoiI0UxMTYxNiIsImJnYyI6IiNGRkZGRkYiLCJ0IjoxfQ/U1NZIEdBTUVT/the-king-maker-personal-use.png"width="85%">
+    <br><strong><font color=Yellow>Presented</font> &nbsp;:-&nbsp; <font color=blue><i>Tic TaC Toe</i></font></strong>
+    </header>
+
+    <div id="game-board"></div>
+
+    <div id="new-game-popup">
+        <div id="new-game-popup-content">
+            <p id="popup-message"></p>
+            <button id="new-game-button">Play Again 🤭</button>
+        </div>
+    </div>
+
+    <footer>
+        <div id="ad-section">
+            <!-- Add your advertising content here -->
+            <center>
+              
+Copyright 2023-24 SSY GAMES. All rights reserved ❣️❣️
+            </center>
+            <a href="https://satyam914.github.io/Tic-tac-toe-terms-condition-/"><h3>•Terms & Conditions</h3></a>&nbsp;&nbsp;&nbsp;<a href="https://satyam914.github.io/Review/"><strong>•Customer Support</strong></a>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdp8GkDdCGcX7f8w5UGgnmk7foNIfz5kRDEg64YTgVOy5GmEbfIu_Wpbc&s=10"><strong><font color=black>•How to Play..?</strong></a></font>
+            <p><strong>Advertisement</strong></p>
+            <script type="text/javascript">
+ atOptions = {
+  'key' : '041c8d0545884a92a39276d2707fdc15',
+  'format' : 'iframe',
+  'height' : 250,
+  'width' : 300,
+  'params' : {}
+ };
+ document.write('<scr' + 'ipt type="text/javascript" src="//www.profitablecreativeformat.com/041c8d0545884a92a39276d2707fdc15/invoke.js"></scr' + 'ipt>');
+</script>
+            
+            <center><font color=yellow><strong>#Made with love SSY BRAND ❣️❣️</strong></center>
+            </font></div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const board = document.getElementById('game-board');
+            const newGamePopup = document.getElementById('new-game-popup');
+            const newGameButton = document.getElementById('new-game-button');
+            const popupMessage = document.getElementById('popup-message');
+
+            let currentPlayer = 'X';
+            let gameBoard = ['', '', '', '', '', '', '', '', ''];
+            let gameActive = true;
+
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.index = i;
+                cell.addEventListener('click', handleCellClick);
+                board.appendChild(cell);
+            }
+
+            function handleCellClick(event) {
+                const index = event.target.dataset.index;
+
+                if (gameBoard[index] === '' && gameActive) {
+                    gameBoard[index] = currentPlayer;
+                    event.target.textContent = currentPlayer;
+
+                    if (checkWinner()) {
+                        showNewGamePopup(`Player ${currentPlayer} wins!`);
+                        gameActive = false;
+                    } else if (gameBoard.every(cell => cell !== '')) {
+                        showNewGamePopup('It\'s a draw!');
+                        gameActive = false;
+                    } else {
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                        makeComputerMove();
+                    }
+                }
+            }
+
+            function makeComputerMove() {
+                const emptyCells = gameBoard.reduce((acc, cell, index) => {
+                    if (cell === '') {
+                        acc.push(index);
+                    }
+                    return acc;
+                }, []);
+
+                // Check if the computer can win in the next move
+                let computerWinMove = findWinningMove('O');
+                // If not, check if the computer needs to block the player from winning
+                if (!computerWinMove) {
+                    computerWinMove = findWinningMove('X');
+                }
+
+                const computerMoveIndex = computerWinMove || emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                gameBoard[computerMoveIndex] = currentPlayer;
+                document.querySelector(`.cell[data-index="${computerMoveIndex}"]`).textContent = currentPlayer;
+
+                if (checkWinner()) {
+                    showNewGamePopup(`Player ${currentPlayer} wins!`);
+                    gameActive = false;
+                } else if (gameBoard.every(cell => cell !== '')) {
+                    showNewGamePopup('It\'s a draw!');
+                    gameActive = false;
+                } else {
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            }
+
+            function findWinningMove(player) {
+                // Check for a winning move for the specified player
+                const emptyCells = gameBoard.reduce((acc, cell, index) => {
+                    if (cell === '') {
+                        acc.push(index);
+                    }
+                    return acc;
+                }, []);
+
+                for (const index of emptyCells) {
+                    const tempBoard = [...gameBoard];
+                    tempBoard[index] = player;
+
+                    if (checkWinner(tempBoard)) {
+                        return index;
+                    }
+                }
+
+                return null;
+            }
+
+            function checkWinner(boardToCheck = gameBoard) {
+                const winPatterns = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                    [0, 4, 8], [2, 4, 6] // Diagonals
+                ];
+
+                return winPatterns.some(pattern => {
+                    const [a, b, c] = pattern;
+                    return boardToCheck[a] !== '' && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c];
+                });
+            }
+
+            function showNewGamePopup(message) {
+                popupMessage.textContent = message;
+                newGamePopup.style.display = 'flex';
+            }
+
+            newGameButton.addEventListener('click', () => {
+                resetGame();
+                newGamePopup.style.display = 'none';
+            });
+
+            function resetGame() {
+                gameBoard = ['', '', '', '', '', '', '', '', ''];
+                gameActive = true;
+                currentPlayer = 'X';
+
+                document.querySelectorAll('.cell').forEach(cell => {
+                    cell.textContent = '';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
